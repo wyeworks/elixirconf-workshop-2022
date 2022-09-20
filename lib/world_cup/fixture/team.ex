@@ -1,4 +1,4 @@
-defmodule WorldCup.Team do
+defmodule WorldCup.Fixture.Team do
   defstruct [:abbreviation, :name, :ranking]
 
   @type t() :: %__MODULE__{

@@ -1,57 +1,33 @@
 defmodule WorldCupWeb.GroupLive do
   use WorldCupWeb, :live_view
 
-  alias WorldCup.{Match, Result}
-
-  @rounds %{
-    "round_1" => %{
-      "match_1" => %Match{
-        home_team: "URU",
-        away_team: "KOR"
-      },
-      "match_2" => %Match{
-        home_team: "POR",
-        away_team: "GHA"
-      }
-    },
-    "round_2" => %{
-      "match_1" => %Match{
-        home_team: "KOR",
-        away_team: "GHA"
-      },
-      "match_2" => %Match{
-        home_team: "POR",
-        away_team: "URU"
-      }
-    },
-    "round_3" => %{
-      "match_1" => %Match{
-        home_team: "KOR",
-        away_team: "POR"
-      },
-      "match_2" => %Match{
-        home_team: "GHA",
-        away_team: "URU"
-      }
-    }
-  }
+  alias WorldCup.Fixture
+  alias WorldCup.Fixture.{Result, Round}
 
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, :rounds, @rounds)}
+    teams = Fixture.list_teams()
+    rounds = Fixture.list_rounds()
+
+    socket =
+      socket
+      |> assign(:rounds, rounds)
+      |> assign(:teams, teams)
+
+    {:ok, socket}
   end
 
   def render(assigns) do
     ~H"""
-      <%= for {round_id, matches} <- @rounds do %>
-        <%= round_id %>
-        <%= for {match_id, match} <- matches do %>
-          <.form let={f} for={:match} id={"#{round_id}_#{match_id}"} phx_submit="update_forecast" %>
-            <%= hidden_input f, :round_id, value: round_id %>
-            <%= hidden_input f, :match_id, value: match_id %>
+      <%= for round <- @rounds do %>
+        <%= for match <- round.matches do %>
+          <.form let={f} for={:match} id={"#{round.id}_#{match.id}"} phx_submit="update_forecast" %>
+            <!-- Needed to catch these values to have them in the handle_event -->
+            <%= hidden_input f, :round_id, value: round.id %>
+            <%= hidden_input f, :match_id, value: match.id %>
 
             <%= match.home_team %>
-            <%= number_input f, :home_score, id: "#{round_id}_#{match.home_team}", value: match.result.home_score || 0 %>
-            <%= number_input f, :away_score, id: "#{round_id}_#{match.away_team}", value: match.result.away_score || 0 %>
+            <%= number_input f, :home_score, value: match.result.home_score || 0, min: 0 %>
+            <%= number_input f, :away_score, value: match.result.away_score || 0, min: 0 %>
             <%= match.away_team %>
 
             <%= submit do: "Send" %>
@@ -61,17 +37,39 @@ defmodule WorldCupWeb.GroupLive do
     """
   end
 
-  def handle_event("update_forecast", %{"match" => params}, socket) do
-    socket = update(socket, :rounds, fn rounds -> update_rounds(rounds, params) end)
-
-    {:noreply, socket}
-  end
-
-  defp update_rounds(rounds, %{"round_id" => round_id, "match_id" => match_id, "home_score" => home_score, "away_score" => away_score} = _params) do
+  def handle_event(
+    "update_forecast",
+    %{
+      "match" => %{
+        "round_id" => round_id,
+        "match_id" => match_id,
+        "home_score" => home_score,
+        "away_score" => away_score
+      }
+    } = _params,
+    socket) do
     result = %Result{
       home_score: String.to_integer(home_score),
       away_score: String.to_integer(away_score)
     }
-    update_in(rounds, [round_id, match_id], fn match -> Map.put(match, :result, result) end)
+
+    socket = update(socket, :rounds,
+      fn rounds ->
+        update_in_list(rounds, round_id, fn round ->
+          %Round{
+            id: round.id,
+            matches: update_in_list(round.matches, match_id, fn match -> Map.put(match, :result, result) end)
+          }
+        end)
+      end)
+
+    {:noreply, socket}
+  end
+
+  defp update_in_list(list, entity_id, update_fn) do
+    Enum.map(list, fn
+      entity when entity.id == entity_id -> update_fn.(entity)
+      e -> e
+    end)
   end
 end

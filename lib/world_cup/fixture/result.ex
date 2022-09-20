@@ -1,4 +1,4 @@
-defmodule WorldCup.Result do
+defmodule WorldCup.Fixture.Result do
   defstruct [:away_score, :home_score]
 
   @type t() :: %__MODULE__{
