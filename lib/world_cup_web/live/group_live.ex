@@ -25,15 +25,32 @@ defmodule WorldCupWeb.GroupLive do
             <%= hidden_input f, :round_id, value: round.id %>
             <%= hidden_input f, :match_id, value: match.id %>
 
-            <%= match.home_team %>
+            <%= match.home_team.name %>
             <%= number_input f, :home_score, value: match.result.home_score || 0, min: 0 %>
             <%= number_input f, :away_score, value: match.result.away_score || 0, min: 0 %>
-            <%= match.away_team %>
+            <%= match.away_team.name %>
 
             <%= submit do: "Send" %>
           </.form>
         <% end %>
       <% end %>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Position</th>
+          </tr>
+        </thead>
+        <tbody>
+          <%= for team <- @teams do %>
+            <tr>
+              <td><%= team.abbreviation %></td>
+              <td><%= team.ranking %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
     """
   end
 
