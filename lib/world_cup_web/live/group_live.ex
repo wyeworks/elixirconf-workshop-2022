@@ -1,4 +1,4 @@
-defmodule WorldCupWeb.GroupLive do
+defmodule WorldCupWeb.ForecastLive do
   use WorldCupWeb, :live_view
 
   alias WorldCup.Fixture

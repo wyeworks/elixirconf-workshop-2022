@@ -19,7 +19,7 @@ defmodule WorldCupWeb.Router do
 
     get "/", PageController, :index
 
-    live "/group", GroupLive
+    live "/forecast", ForecastLive
   end
 
   # Other scopes may use custom stacks.
