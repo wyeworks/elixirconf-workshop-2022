@@ -6,6 +6,7 @@ defmodule WorldCup.Fixture.Match do
     :scheduled_at,
     :home_team,
     :away_team,
+    played: false,
     result: %Result{away_score: 0, home_score: 0}
   ]
 
@@ -14,6 +15,7 @@ defmodule WorldCup.Fixture.Match do
     scheduled_at: DateTime.t(),
     home_team: Team.t(),
     away_team: Team.t(),
+    played: Boolean.t(),
     result: Result.t()
   }
 end

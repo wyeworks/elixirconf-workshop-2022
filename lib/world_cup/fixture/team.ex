@@ -1,9 +1,10 @@
 defmodule WorldCup.Fixture.Team do
-  defstruct [:abbreviation, :name, :ranking]
+  defstruct [:id, :abbreviation, :name, points: 0]
 
   @type t() :: %__MODULE__{
+    id: String.t(),
     abbreviation: String.t(),
     name: String.t(),
-    ranking: Integer.t()
+    points: Integer.t()
   }
 end
