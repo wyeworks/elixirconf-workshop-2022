@@ -4,7 +4,7 @@ defmodule WorldCup.Fixture.Round do
   defstruct [:id, :matches]
 
   @type t() :: %__MODULE__{
-    id: String.t(),
-    matches: list(Match.t()),
-  }
+          id: String.t(),
+          matches: list(Match.t())
+        }
 end

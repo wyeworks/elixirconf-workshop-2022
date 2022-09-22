@@ -29,7 +29,7 @@ defmodule WorldCup.Fixture do
   ]
 
   def list_teams(),
-    do: Enum.sort_by(@teams, &(&1.points), :desc)
+    do: Enum.sort_by(@teams, & &1.points, :desc)
 
   def list_rounds() do
     teams = list_teams()
@@ -79,7 +79,7 @@ defmodule WorldCup.Fixture do
             away_team: Enum.at(teams, 1)
           }
         ]
-      },
+      }
     ]
   end
 
@@ -87,11 +87,12 @@ defmodule WorldCup.Fixture do
     update_in_list(rounds, round_id, fn round ->
       %Round{
         id: round.id,
-        matches: update_in_list(round.matches, match_id, fn match ->
-          match
-          |> Map.put(:played, true)
-          |> Map.put(:result, result)
-        end)
+        matches:
+          update_in_list(round.matches, match_id, fn match ->
+            match
+            |> Map.put(:played, true)
+            |> Map.put(:result, result)
+          end)
       }
     end)
   end
@@ -99,24 +100,34 @@ defmodule WorldCup.Fixture do
   def set_teams_points(rounds) do
     rounds
     |> Enum.reduce(list_teams(), fn round, teams ->
-        Enum.reduce(round.matches, teams, fn match, teams ->
-          if match.played do
-            cond do
-              match.result.home_score > match.result.away_score ->
-                update_in_list(teams, match.home_team.id, fn team -> Map.put(team, :points, team.points + 3) end)
-              match.result.home_score == match.result.away_score ->
-                teams
-                |> update_in_list(match.home_team.id, fn team -> Map.put(team, :points, team.points + 1) end)
-                |> update_in_list(match.away_team.id, fn team -> Map.put(team, :points, team.points + 1) end)
-              true ->
-                update_in_list(teams, match.away_team.id, fn team -> Map.put(team, :points, team.points + 3) end)
-            end
-          else
-            teams
+      Enum.reduce(round.matches, teams, fn match, teams ->
+        if match.played do
+          cond do
+            match.result.home_score > match.result.away_score ->
+              update_in_list(teams, match.home_team.id, fn team ->
+                Map.put(team, :points, team.points + 3)
+              end)
+
+            match.result.home_score == match.result.away_score ->
+              teams
+              |> update_in_list(match.home_team.id, fn team ->
+                Map.put(team, :points, team.points + 1)
+              end)
+              |> update_in_list(match.away_team.id, fn team ->
+                Map.put(team, :points, team.points + 1)
+              end)
+
+            true ->
+              update_in_list(teams, match.away_team.id, fn team ->
+                Map.put(team, :points, team.points + 3)
+              end)
           end
-        end)
+        else
+          teams
+        end
       end)
-    |> Enum.sort_by(&(&1.points), :desc)
+    end)
+    |> Enum.sort_by(& &1.points, :desc)
   end
 
   defp update_in_list(list, entity_id, update_fn) do

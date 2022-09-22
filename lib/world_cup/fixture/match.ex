@@ -11,11 +11,11 @@ defmodule WorldCup.Fixture.Match do
   ]
 
   @type t() :: %__MODULE__{
-    id: String.t(),
-    scheduled_at: DateTime.t(),
-    home_team: Team.t(),
-    away_team: Team.t(),
-    played: Boolean.t(),
-    result: Result.t()
-  }
+          id: String.t(),
+          scheduled_at: DateTime.t(),
+          home_team: Team.t(),
+          away_team: Team.t(),
+          played: Boolean.t(),
+          result: Result.t()
+        }
 end
