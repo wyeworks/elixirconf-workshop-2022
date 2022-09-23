@@ -5,6 +5,6 @@ defmodule WorldCup.Fixture.Team do
           id: String.t(),
           abbreviation: String.t(),
           name: String.t(),
-          points: Integer.t()
+          points: integer()
         }
 end

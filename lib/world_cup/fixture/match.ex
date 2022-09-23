@@ -15,7 +15,7 @@ defmodule WorldCup.Fixture.Match do
           scheduled_at: DateTime.t(),
           home_team: Team.t(),
           away_team: Team.t(),
-          played: Boolean.t(),
+          played: boolean(),
           result: Result.t()
         }
 end
