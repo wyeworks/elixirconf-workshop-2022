@@ -4,7 +4,7 @@ defmodule WorldCupWeb.Components.RoundComponent do
   def render(assigns) do
     ~H"""
     <div>
-      <%= round_title(@round.id) %>
+      <h3><%= round_title(@round.id) %></h3>
       <%= for match <- @round.matches do %>
         <.form let={f} for={:match} id={"#{@round.id}_#{match.id}"} phx_submit="update_forecast" %>
           <!-- Needed to catch these values to have them in the handle_event -->
@@ -24,6 +24,6 @@ defmodule WorldCupWeb.Components.RoundComponent do
   end
 
   defp round_title(round_id) do
-    String.replace(round_id, "_", " ") |> String.capitalize()
+    round_id |> String.replace("_", " ") |> String.capitalize()
   end
 end

@@ -32,8 +32,7 @@ defmodule WorldCup.Fixture do
     }
   ]
 
-  def list_teams(),
-    do: Enum.sort_by(@teams, &{&1.points, &1.goal_diff}, :desc)
+  def list_teams(), do: rank_teams(@teams)
 
   def list_rounds() do
     teams = list_teams()
@@ -101,72 +100,43 @@ defmodule WorldCup.Fixture do
     end)
   end
 
-  def set_teams_stats(rounds) do
-    rounds
-    |> Enum.reduce(list_teams(), fn round, teams ->
-      Enum.reduce(round.matches, teams, fn match, teams ->
-        update_match_stats(match, teams)
-      end)
-    end)
-    |> Enum.sort_by(&{&1.points, &1.goal_diff}, :desc)
+  def update_teams_stats(rounds) do
+    for round <- rounds,
+        match <- round.matches,
+        reduce: list_teams() do
+      teams -> process_match_result(match, teams)
+    end
+    |> rank_teams()
   end
 
-  defp update_match_stats(%{played: false} = _match, teams), do: teams
+  defp process_match_result(%{played: false} = _match, teams), do: teams
 
-  defp update_match_stats(
-         %{played: true, result: %{home_score: home_score, away_score: away_score}} = match,
+  defp process_match_result(
+         %{result: %{home_score: home_score, away_score: away_score}} = match,
          teams
-       )
-       when home_score > away_score do
+       ) do
     teams
-    |> update_in_list(match.home_team.id, fn team ->
-      team
-      |> Map.put(:points, team.points + 3)
-      |> Map.put(:won_games, team.won_games + 1)
-      |> Map.put(:goal_diff, team.goal_diff + home_score - away_score)
-    end)
-    |> update_in_list(match.away_team.id, fn team ->
-      team
-      |> Map.put(:lost_games, team.won_games + 1)
-      |> Map.put(:goal_diff, team.goal_diff + away_score - home_score)
-    end)
+    |> update_in_list(match.home_team.id, &update_team_stats(&1, home_score, away_score))
+    |> update_in_list(match.away_team.id, &update_team_stats(&1, away_score, home_score))
   end
 
-  defp update_match_stats(
-         %{played: true, result: %{home_score: home_score, away_score: away_score}} = match,
-         teams
-       )
-       when home_score < away_score do
-    teams
-    |> update_in_list(match.away_team.id, fn team ->
-      team
-      |> Map.put(:points, team.points + 3)
-      |> Map.put(:won_games, team.won_games + 1)
-      |> Map.put(:goal_diff, team.goal_diff + away_score - home_score)
-    end)
-    |> update_in_list(match.home_team.id, fn team ->
-      team
-      |> Map.put(:lost_games, team.won_games + 1)
-      |> Map.put(:goal_diff, team.goal_diff + home_score - away_score)
-    end)
+  defp update_team_stats(team, team_score, rival_score) when team_score > rival_score do
+    team
+    |> Map.put(:points, team.points + 3)
+    |> Map.put(:won_games, team.won_games + 1)
+    |> Map.put(:goal_diff, team.goal_diff + team_score - rival_score)
   end
 
-  defp update_match_stats(
-         %{played: true, result: %{home_score: home_score, away_score: away_score}} = match,
-         teams
-       )
-       when home_score == away_score do
-    teams
-    |> update_in_list(match.away_team.id, fn team ->
-      team
-      |> Map.put(:points, team.points + 1)
-      |> Map.put(:draw_games, team.draw_games + 1)
-    end)
-    |> update_in_list(match.home_team.id, fn team ->
-      team
-      |> Map.put(:points, team.points + 1)
-      |> Map.put(:draw_games, team.draw_games + 1)
-    end)
+  defp update_team_stats(team, team_score, rival_score) when team_score < rival_score do
+    team
+    |> Map.put(:lost_games, team.lost_games + 1)
+    |> Map.put(:goal_diff, team.goal_diff + team_score - rival_score)
+  end
+
+  defp update_team_stats(team, team_score, rival_score) when team_score == rival_score do
+    team
+    |> Map.put(:points, team.points + 1)
+    |> Map.put(:draw_games, team.draw_games + 1)
   end
 
   defp update_in_list(list, entity_id, update_fn) do
@@ -175,4 +145,6 @@ defmodule WorldCup.Fixture do
       e -> e
     end)
   end
+
+  defp rank_teams(teams), do: Enum.sort_by(teams, &{&1.points, &1.goal_diff}, :desc)
 end

@@ -46,7 +46,7 @@ defmodule WorldCupWeb.ForecastLive do
     }
 
     rounds = Fixture.update_match_result(socket.assigns.rounds, round_id, match_id, result)
-    teams = Fixture.set_teams_stats(rounds)
+    teams = Fixture.update_teams_stats(rounds)
 
     socket =
       socket

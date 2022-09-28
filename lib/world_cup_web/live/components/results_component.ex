@@ -23,7 +23,7 @@ defmodule WorldCupWeb.Components.ResultsComponent do
             <tr>
               <td><%= index %></td>
               <td><%= ~s(#{team.flag} #{team.abbreviation}) %></td>
-              <td><%= team.points %></td>
+              <td><b><%= team.points %></b></td>
               <td><%= team.won_games + team.draw_games + team.lost_games %></td>
               <td><%= team.won_games %></td>
               <td><%= team.draw_games %></td>
