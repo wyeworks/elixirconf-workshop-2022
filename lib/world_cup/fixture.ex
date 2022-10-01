@@ -3,7 +3,7 @@ defmodule WorldCup.Fixture do
   The fixture context.
   """
 
-  alias WorldCup.Fixture.{Match, Round, Team}
+  alias WorldCup.Fixture.{Match, Team}
 
   @uru_team %Team{
     id: "team_1",
