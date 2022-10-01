@@ -5,104 +5,88 @@ defmodule WorldCup.Fixture do
 
   alias WorldCup.Fixture.{Match, Round, Team}
 
-  @teams [
-    %Team{
-      id: "team_1",
-      name: "Uruguay",
-      abbreviation: "URU",
-      flag: "🇺🇾"
+  @uru_team %Team{
+    id: "team_1",
+    name: "Uruguay",
+    abbreviation: "URU",
+    flag: "🇺🇾"
+  }
+
+  @kor_team %Team{
+    id: "team_2",
+    name: "Korea",
+    abbreviation: "KOR",
+    flag: "🇰🇷"
+  }
+
+  @por_team %Team{
+    id: "team_3",
+    name: "Portugal",
+    abbreviation: "POR",
+    flag: "🇵🇹"
+  }
+
+  @gha_team %Team{
+    id: "team_4",
+    name: "Ghana",
+    abbreviation: "GHA",
+    flag: "🇬🇭"
+  }
+
+  @teams [@uru_team, @kor_team, @por_team, @gha_team]
+
+  @matches [
+    %Match{
+      id: "match_1",
+      home_team: @uru_team,
+      away_team: @kor_team,
+      round: "round_1"
     },
-    %Team{
-      id: "team_2",
-      name: "Korea",
-      abbreviation: "KOR",
-      flag: "🇰🇷"
+    %Match{
+      id: "match_2",
+      home_team: @por_team,
+      away_team: @gha_team,
+      round: "round_1"
     },
-    %Team{
-      id: "team_3",
-      name: "Portugal",
-      abbreviation: "POR",
-      flag: "🇵🇹"
+    %Match{
+      id: "match_3",
+      home_team: @uru_team,
+      away_team: @gha_team,
+      round: "round_2"
     },
-    %Team{
-      id: "team_4",
-      name: "Ghana",
-      abbreviation: "GHA",
-      flag: "🇬🇭"
+    %Match{
+      id: "match_4",
+      home_team: @por_team,
+      away_team: @kor_team,
+      round: "round_2"
+    },
+    %Match{
+      id: "match_5",
+      home_team: @uru_team,
+      away_team: @por_team,
+      round: "round_3"
+    },
+    %Match{
+      id: "match_6",
+      home_team: @gha_team,
+      away_team: @kor_team,
+      round: "round_3"
     }
   ]
 
-  def list_teams(), do: rank_teams(@teams)
+  def list_teams(), do: @teams
+  def list_matches(), do: @matches
 
-  def list_rounds() do
-    teams = list_teams()
+  def split_in_rounds(matches), do: Enum.group_by(matches, & &1.round)
 
-    [
-      %Round{
-        id: "round_1",
-        matches: [
-          %Match{
-            id: "match_1",
-            home_team: Enum.at(teams, 0),
-            away_team: Enum.at(teams, 1)
-          },
-          %Match{
-            id: "match_2",
-            home_team: Enum.at(teams, 2),
-            away_team: Enum.at(teams, 3)
-          }
-        ]
-      },
-      %Round{
-        id: "round_2",
-        matches: [
-          %Match{
-            id: "match_1",
-            home_team: Enum.at(teams, 0),
-            away_team: Enum.at(teams, 3)
-          },
-          %Match{
-            id: "match_2",
-            home_team: Enum.at(teams, 2),
-            away_team: Enum.at(teams, 1)
-          }
-        ]
-      },
-      %Round{
-        id: "round_3",
-        matches: [
-          %Match{
-            id: "match_1",
-            home_team: Enum.at(teams, 0),
-            away_team: Enum.at(teams, 2)
-          },
-          %Match{
-            id: "match_2",
-            home_team: Enum.at(teams, 3),
-            away_team: Enum.at(teams, 1)
-          }
-        ]
-      }
-    ]
-  end
-
-  def update_match_result(rounds, round_id, match_id, result) do
-    update_in_list(rounds, round_id, fn round ->
-      %Round{
-        id: round.id,
-        matches:
-          update_in_list(round.matches, match_id, fn match ->
-            match
-            |> Map.put(:played, true)
-            |> Map.put(:result, result)
-          end)
-      }
+  def update_match_result(matches, match_id, result) do
+    update_in_list(matches, match_id, fn match ->
+      %{match | played: true, result: result}
     end)
   end
 
-  def update_teams_stats(rounds) do
-    for round <- rounds,
-        match <- round.matches,
+  def update_teams_stats(matches) do
+    for match <- matches,
         reduce: list_teams() do
       teams -> process_match_result(match, teams)
     end
