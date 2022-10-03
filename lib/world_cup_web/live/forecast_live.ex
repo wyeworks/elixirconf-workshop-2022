@@ -7,12 +7,12 @@ defmodule WorldCupWeb.ForecastLive do
 
   def mount(_params, _session, socket) do
     teams = Fixture.list_teams()
-    rounds = Fixture.list_rounds()
+    matches = Fixture.list_matches()
 
     socket =
       socket
-      |> assign(:rounds, rounds)
       |> assign(:teams, teams)
+      |> assign(:matches, matches)
 
     {:ok, socket}
   end
@@ -22,17 +22,20 @@ defmodule WorldCupWeb.ForecastLive do
     <.live_component module={ResultsComponent} id="results" teams={@teams} />
 
     <h1>Fixture</h1>
-    <%= for round <- @rounds do %>
-      <.live_component module={RoundComponent} id={round.id} round={round} />
+    <%= for {round_id, matches} <- get_rounds(@matches) do %>
+      <.live_component module={RoundComponent} id={round_id} matches={matches} />
     <% end %>
     """
+  end
+
+  defp get_rounds(matches) do
+    Fixture.split_in_rounds(matches)
   end
 
   def handle_event(
         "update_forecast",
         %{
           "match" => %{
-            "round_id" => round_id,
             "match_id" => match_id,
             "home_score" => home_score,
             "away_score" => away_score
@@ -45,12 +48,12 @@ defmodule WorldCupWeb.ForecastLive do
       away_score: String.to_integer(away_score)
     }
 
-    rounds = Fixture.update_match_result(socket.assigns.rounds, round_id, match_id, result)
-    teams = Fixture.update_teams_stats(rounds)
+    matches = Fixture.update_match_result(socket.assigns.matches, match_id, result)
+    teams = Fixture.update_teams_stats(matches)
 
     socket =
       socket
-      |> assign(:rounds, rounds)
+      |> assign(:matches, matches)
       |> assign(:teams, teams)
 
     {:noreply, socket}
