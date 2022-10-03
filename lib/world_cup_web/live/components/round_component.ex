@@ -7,8 +7,7 @@ defmodule WorldCupWeb.Components.RoundComponent do
       <h3><%= round_title(@id) %></h3>
       <%= for match <- @matches do %>
         <.form let={f} for={:match} id={match.id} } phx_submit="update_forecast" %>
-          <!-- Needed to catch these values to have them in the handle_event -->
-          <%= hidden_input(f, :round_id, value: @id) %>
+          <!-- Needed to catch this value to have it in the handle_event -->
           <%= hidden_input(f, :match_id, value: match.id) %>
 
           <%= match.home_team.name %>
