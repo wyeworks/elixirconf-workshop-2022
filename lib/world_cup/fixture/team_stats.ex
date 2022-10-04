@@ -1,10 +1,13 @@
 defmodule WorldCup.Fixture.TeamStats do
-  def update_result(matches, match_id, result) do
+  def update_matches(matches, updated_match) do
     Enum.map(matches, fn
-      match when match.id == match_id -> %{match | played: true, result: result}
+      match when match.id == updated_match.id -> updated_match
       match -> match
     end)
   end
+
+  def update_match_result(match, result),
+    do: %{match | played: true, result: result}
 
   def calculate(teams, matches) do
     Enum.map(teams, fn team ->

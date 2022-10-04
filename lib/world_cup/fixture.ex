@@ -79,8 +79,12 @@ defmodule WorldCup.Fixture do
 
   def split_in_rounds(matches), do: Enum.group_by(matches, & &1.round)
 
-  def update_match_result(matches, match_id, result) do
-    TeamStats.update_result(matches, match_id, result)
+  def update_matches(matches, match) do
+    TeamStats.update_matches(matches, match)
+  end
+
+  def update_match_result(match, result) do
+    TeamStats.update_match_result(match, result)
   end
 
   def update_teams_stats(matches) do
