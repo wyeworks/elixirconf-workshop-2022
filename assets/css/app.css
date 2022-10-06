@@ -4,6 +4,10 @@
 
 /* This file is for your main application CSS */
 
+body {
+  @apply bg-cover bg-[url('/images/soccer.jpeg')] p-10
+}
+
 /* Alerts and form errors used by phx.new */
 .alert {
   padding: 15px;
