@@ -1,6 +1,8 @@
 defmodule WorldCupWeb.Components.RoundComponent do
   use WorldCupWeb, :live_component
 
+  alias WorldCup.Fixture.Result
+
   def render(assigns) do
     ~H"""
     <div class="round">
@@ -8,11 +10,12 @@ defmodule WorldCupWeb.Components.RoundComponent do
       <%= for match <- @matches do %>
         <.form
           let={f}
-          for={:match}
-          id={match.id}
+          for={Result.changeset(match.result)}
+          id={"#{match.id}"}
           phx_change="update_forecast"
           class={match_class(match.played)}
         >
+          <!-- Needed to catch this value to have it in the handle_event -->
           <%= hidden_input(f, :match_id, value: match.id) %>
 
           <div class="team-input">

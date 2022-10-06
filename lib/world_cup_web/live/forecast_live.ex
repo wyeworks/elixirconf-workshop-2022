@@ -2,12 +2,11 @@ defmodule WorldCupWeb.ForecastLive do
   use WorldCupWeb, :live_view
 
   alias WorldCup.Fixture
-  alias WorldCup.Fixture.Result
   alias WorldCupWeb.Components.{RoundComponent, StandingsComponent}
 
   def mount(_params, _session, socket) do
-    teams = Fixture.list_teams()
     matches = Fixture.list_matches()
+    teams = Fixture.calculate_teams_stats(matches)
 
     socket =
       socket
@@ -36,7 +35,7 @@ defmodule WorldCupWeb.ForecastLive do
   def handle_event(
         "update_forecast",
         %{
-          "match" => %{
+          "result" => %{
             "match_id" => match_id,
             "home_score" => home_score,
             "away_score" => away_score
@@ -44,18 +43,33 @@ defmodule WorldCupWeb.ForecastLive do
         } = _params,
         socket
       ) do
-    result = %Result{
+    match_id = String.to_integer(match_id)
+
+    new_result = %{
       home_score: String.to_integer(home_score),
-      away_score: String.to_integer(away_score)
+      away_score: String.to_integer(away_score),
+      match_id: match_id
     }
 
-    matches = Fixture.update_match_result(socket.assigns.matches, match_id, result)
-    teams = Fixture.calculate_team_stats(matches)
+    match = Enum.find(socket.assigns.matches, fn match -> match.id == match_id end)
 
     socket =
-      socket
-      |> assign(:teams, teams)
-      |> assign(:matches, matches)
+      case Fixture.update_match_result(match, new_result) do
+        {:ok, _result_and_match} ->
+          matches = Fixture.list_matches()
+          teams = Fixture.calculate_teams_stats(matches)
+
+          socket
+          |> assign(:matches, matches)
+          |> assign(:teams, teams)
+
+        {:error, _, _, _} ->
+          put_flash(
+            socket,
+            :error,
+            "Result couldn't be updated"
+          )
+      end
 
     {:noreply, socket}
   end
