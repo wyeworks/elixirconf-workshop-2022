@@ -8,6 +8,57 @@ body {
   @apply bg-cover bg-[url('/images/soccer.jpeg')] p-10
 }
 
+h3 {
+  @apply text-2xl mx-auto mb-2
+}
+
+table {
+  @apply text-center w-9/12 shadow-xl bg-yellow-300 bg-opacity-80 mx-auto
+}
+
+thead {
+  @apply bg-yellow-400 h-10 text-lg rounded-2xl
+}
+
+tbody {
+  @apply text-xl
+}
+
+tr{
+  @apply h-10
+}
+
+input {
+ @apply w-16 ml-4 text-center
+}
+
+p {
+  @apply text-xl
+}
+
+.team-input {
+ @apply flex justify-between items-center m-4
+}
+
+.match-played {
+ @apply bg-green-200 m-2 rounded-lg
+}
+
+.match-pending {
+  @apply bg-gray-200 m-2 rounded-lg
+}
+
+.round-played {
+  @apply flex flex-col m-4 mx-10 p-4 bg-green-100 bg-opacity-95 border-2 rounded-lg shadow-xl
+}
+
+.round-pending {
+  @apply flex flex-col m-4 mx-10 p-4 bg-gray-100 bg-opacity-95 border-2 rounded-lg shadow-xl
+}
+
+.highlight-row {
+  @apply bg-blue-100 bg-opacity-80
+}
 /* Alerts and form errors used by phx.new */
 .alert {
   padding: 15px;

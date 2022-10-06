@@ -19,12 +19,15 @@ defmodule WorldCupWeb.ForecastLive do
 
   def render(assigns) do
     ~H"""
-    <.live_component module={ResultsComponent} id="results" teams={@teams} />
+    <div>
+      <.live_component module={ResultsComponent} id="results" teams={@teams} />
 
-    <h1>Fixture</h1>
-    <%= for {round_id, matches} <- get_rounds(@matches) do %>
-      <.live_component module={RoundComponent} id={round_id} matches={matches} />
-    <% end %>
+      <div class="flex justify-center mt-10">
+        <%= for {round_id, matches} <- get_rounds(@matches) do %>
+          <.live_component module={RoundComponent} id={round_id} matches={matches} />
+        <% end %>
+      </div>
+    </div>
     """
   end
 
