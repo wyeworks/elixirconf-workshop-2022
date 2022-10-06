@@ -2,88 +2,30 @@ defmodule WorldCup.Fixture do
   @moduledoc """
   The fixture context.
   """
+  import Ecto.Query, only: [order_by: 2, preload: 2]
 
-  alias WorldCup.Fixture.{Match, Team, TeamStats}
+  alias WorldCup.Fixture.{Match, Result, Team, TeamStats}
+  alias WorldCup.Repo
 
-  @uru_team %Team{
-    id: "team_1",
-    name: "Uruguay",
-    abbreviation: "URU",
-    flag: "🇺🇾"
-  }
+  def list_teams(), do: Repo.all(Team)
 
-  @kor_team %Team{
-    id: "team_2",
-    name: "Korea",
-    abbreviation: "KOR",
-    flag: "🇰🇷"
-  }
-
-  @por_team %Team{
-    id: "team_3",
-    name: "Portugal",
-    abbreviation: "POR",
-    flag: "🇵🇹"
-  }
-
-  @gha_team %Team{
-    id: "team_4",
-    name: "Ghana",
-    abbreviation: "GHA",
-    flag: "🇬🇭"
-  }
-
-  @teams [@uru_team, @kor_team, @por_team, @gha_team]
-
-  @matches [
-    %Match{
-      id: "match_1",
-      home_team: @uru_team,
-      away_team: @kor_team,
-      round: "round_1"
-    },
-    %Match{
-      id: "match_2",
-      home_team: @por_team,
-      away_team: @gha_team,
-      round: "round_1"
-    },
-    %Match{
-      id: "match_3",
-      home_team: @uru_team,
-      away_team: @gha_team,
-      round: "round_2"
-    },
-    %Match{
-      id: "match_4",
-      home_team: @por_team,
-      away_team: @kor_team,
-      round: "round_2"
-    },
-    %Match{
-      id: "match_5",
-      home_team: @uru_team,
-      away_team: @por_team,
-      round: "round_3"
-    },
-    %Match{
-      id: "match_6",
-      home_team: @gha_team,
-      away_team: @kor_team,
-      round: "round_3"
-    }
-  ]
-
-  def list_teams(), do: @teams
-  def list_matches(), do: @matches
+  def list_matches() do
+    Match
+    |> order_by(:id)
+    |> preload([:result, :home_team, :away_team])
+    |> Repo.all()
+  end
 
   def split_in_rounds(matches), do: Enum.group_by(matches, & &1.round)
 
-  def update_match_result(matches, match_id, result) do
-    TeamStats.update_result(matches, match_id, result)
+  def update_match_result(match, result) do
+    Ecto.Multi.new()
+    |> Ecto.Multi.update(:match, Match.changeset(match, %{played: true}))
+    |> Ecto.Multi.update(:result, Result.changeset(match.result, result))
+    |> Repo.transaction()
   end
 
-  def update_teams_stats(matches) do
+  def calculate_teams_stats(matches) do
     list_teams() |> TeamStats.calculate(matches)
   end
 end
