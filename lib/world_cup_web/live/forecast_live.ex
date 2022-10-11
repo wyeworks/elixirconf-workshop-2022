@@ -50,7 +50,12 @@ defmodule WorldCupWeb.ForecastLive do
     }
 
     matches = Fixture.update_match_result(socket.assigns.matches, match_id, result)
-    socket = assign(socket, :matches, matches)
+    teams = Fixture.calculate(matches)
+
+    socket =
+      socket
+      |> assign(:teams, teams)
+      |> assign(:matches, matches)
 
     {:noreply, socket}
   end
