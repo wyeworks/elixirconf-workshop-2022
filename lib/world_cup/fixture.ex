@@ -76,4 +76,6 @@ defmodule WorldCup.Fixture do
 
   def list_teams(), do: @teams
   def list_matches(), do: @matches
+
+  def split_in_rounds(matches), do: Enum.group_by(matches, & &1.round)
 end

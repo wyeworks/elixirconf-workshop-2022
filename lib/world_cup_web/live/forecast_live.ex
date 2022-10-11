@@ -2,6 +2,7 @@ defmodule WorldCupWeb.ForecastLive do
   use WorldCupWeb, :live_view
 
   alias WorldCup.Fixture
+  alias WorldCupWeb.Components.RoundComponent
 
   def mount(_params, _session, socket) do
     teams = Fixture.list_teams()
@@ -36,11 +37,15 @@ defmodule WorldCupWeb.ForecastLive do
         </tbody>
       </table>
 
-      <%= for match <- @matches do %>
-        <div>
-        <%= match.home_team.name %> vs <%= match.away_team.name %>
-        </div>
-      <% end %>
+      <div class="rounds">
+        <%= for {round_id, matches} <- get_rounds(@matches) do %>
+          <.live_component module={RoundComponent} id={round_id} matches={matches} />
+        <% end %>
+      </div>
     """
+  end
+
+  defp get_rounds(matches) do
+    Fixture.split_in_rounds(matches)
   end
 end
