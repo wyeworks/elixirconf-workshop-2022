@@ -18,6 +18,8 @@ defmodule WorldCupWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
+
+    live "/forecast", ForecastLive
   end
 
   # Other scopes may use custom stacks.
