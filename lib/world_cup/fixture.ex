@@ -4,6 +4,7 @@ defmodule WorldCup.Fixture do
   """
 
   alias WorldCup.Fixture.{Match, Team}
+  alias WorldCup.Standings
 
   @uru_team %Team{
     id: "team_1",
@@ -86,23 +87,7 @@ defmodule WorldCup.Fixture do
     end)
   end
 
-  def calculate(matches) do
-    Enum.map(list_teams(), fn team ->
-      Enum.reduce(matches, team, fn match, acc -> process_match_result(match, acc) end)
-    end)
-  end
-
-  defp process_match_result(
-         %{played: true, home_team: home_team, away_team: away_team},
-         team
-       )
-       when home_team.id == team.id or away_team.id == team.id do
-    update_team_stats(team)
-  end
-
-  defp process_match_result(_match, team), do: team
-
-  defp update_team_stats(team) do
-    Map.merge(team, %{points: team.points + 3})
+  def calculate_team_stats(matches) do
+    Standings.calculate(list_teams(), matches)
   end
 end
