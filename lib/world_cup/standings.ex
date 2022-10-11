@@ -3,6 +3,7 @@ defmodule WorldCup.Standings do
     Enum.map(teams, fn team ->
       Enum.reduce(matches, team, fn match, acc -> process_match_result(match, acc) end)
     end)
+    |> rank_teams()
   end
 
   defp process_match_result(
@@ -34,4 +35,6 @@ defmodule WorldCup.Standings do
   defp update_team_stats(team, team_score, rival_score) when team_score < rival_score do
     team
   end
+
+  defp rank_teams(teams), do: Enum.sort_by(teams, &{&1.points, &1.goal_diff}, :desc)
 end
