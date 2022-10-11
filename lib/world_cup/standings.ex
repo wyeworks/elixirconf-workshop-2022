@@ -25,15 +25,25 @@ defmodule WorldCup.Standings do
   defp process_match_result(_match, team), do: team
 
   defp update_team_stats(team, team_score, rival_score) when team_score > rival_score do
-    Map.put(team, :points, team.points + 3)
+    Map.merge(team, %{
+      points: team.points + 3,
+      won_games: team.won_games + 1,
+      goal_diff: team.goal_diff + team_score - rival_score
+    })
   end
 
   defp update_team_stats(team, team_score, rival_score) when team_score == rival_score do
-    Map.put(team, :points, team.points + 1)
+    Map.merge(team, %{
+      points: team.points + 1,
+      draw_games: team.draw_games + 1
+    })
   end
 
   defp update_team_stats(team, team_score, rival_score) when team_score < rival_score do
-    team
+    Map.merge(team, %{
+      lost_games: team.lost_games + 1,
+      goal_diff: team.goal_diff + team_score - rival_score
+    })
   end
 
   defp rank_teams(teams), do: Enum.sort_by(teams, &{&1.points, &1.goal_diff}, :desc)

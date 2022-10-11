@@ -11,6 +11,11 @@ defmodule WorldCupWeb.Components.StandingsComponent do
           <th>Position</th>
           <th class="table-team-name">Name</th>
           <th>Points</th>
+          <th>Played</th>
+          <th>Won</th>
+          <th>Draw</th>
+          <th>Lost</th>
+          <th>Goal diff.</th>
         </tr>
       </thead>
       <tbody>
@@ -19,6 +24,11 @@ defmodule WorldCupWeb.Components.StandingsComponent do
             <td><%= index %></td>
             <td class="table-team-name"><b><%= "#{team.flag} #{team.name}" %></b></td>
             <td><b><%= team.points %></b></td>
+            <td><%= team.won_games + team.draw_games + team.lost_games %></td>
+            <td><%= team.won_games %></td>
+            <td><%= team.draw_games %></td>
+            <td><%= team.lost_games %></td>
+            <td><%= team.goal_diff %></td>
           </tr>
         <% end %>
       </tbody>
