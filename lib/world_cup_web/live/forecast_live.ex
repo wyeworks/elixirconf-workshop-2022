@@ -49,8 +49,8 @@ defmodule WorldCupWeb.ForecastLive do
       away_score: String.to_integer(away_score)
     }
 
-    IO.inspect(result)
-    IO.inspect("Match id = #{match_id}")
+    matches = Fixture.update_match_result(socket.assigns.matches, match_id, result)
+    socket = assign(socket, :matches, matches)
 
     {:noreply, socket}
   end

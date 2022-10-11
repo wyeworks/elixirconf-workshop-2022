@@ -78,4 +78,11 @@ defmodule WorldCup.Fixture do
   def list_matches(), do: @matches
 
   def split_in_rounds(matches), do: Enum.group_by(matches, & &1.round)
+
+  def update_match_result(matches, match_id, result) do
+    Enum.map(matches, fn
+      match when match.id == match_id -> %{match | played: true, result: result}
+      match -> match
+    end)
+  end
 end

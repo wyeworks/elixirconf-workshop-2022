@@ -6,7 +6,13 @@ defmodule WorldCupWeb.Components.RoundComponent do
     <div class="round">
       <h3><%= round_title(@id) %></h3>
       <%= for match <- @matches do %>
-        <.form let={f} for={:match} id={match.id} phx_change="update_forecast" class="match-pending">
+        <.form
+          let={f}
+          for={:match}
+          id={match.id}
+          phx_change="update_forecast"
+          class={match_class(match.played)}
+        >
           <%= hidden_input(f, :match_id, value: match.id) %>
 
           <div class="team-input">
@@ -23,6 +29,9 @@ defmodule WorldCupWeb.Components.RoundComponent do
     </div>
     """
   end
+
+  defp match_class(true), do: "match-played"
+  defp match_class(false), do: "match-pending"
 
   defp round_title(round_id) do
     round_id |> String.replace("_", " ") |> String.capitalize()
