@@ -5,7 +5,12 @@ defmodule WorldCupWeb.ForecastLive do
 
   def mount(_params, _session, socket) do
     teams = Fixture.list_teams()
-    socket = assign(socket, :teams, teams)
+    matches = Fixture.list_matches()
+
+    socket =
+      socket
+      |> assign(:teams, teams)
+      |> assign(:matches, matches)
 
     {:ok, socket}
   end
@@ -30,6 +35,12 @@ defmodule WorldCupWeb.ForecastLive do
           <% end %>
         </tbody>
       </table>
+
+      <%= for match <- @matches do %>
+        <div>
+        <%= match.home_team.name %> vs <%= match.away_team.name %>
+        </div>
+      <% end %>
     """
   end
 end

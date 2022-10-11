@@ -3,7 +3,7 @@ defmodule WorldCup.Fixture do
   The fixture context.
   """
 
-  alias WorldCup.Fixture.Team
+  alias WorldCup.Fixture.{Match, Team}
 
   @uru_team %Team{
     id: "team_1",
@@ -35,5 +35,45 @@ defmodule WorldCup.Fixture do
 
   @teams [@uru_team, @kor_team, @por_team, @gha_team]
 
+  @matches [
+    %Match{
+      id: "match_1",
+      home_team: @uru_team,
+      away_team: @kor_team,
+      round: "round_1"
+    },
+    %Match{
+      id: "match_2",
+      home_team: @por_team,
+      away_team: @gha_team,
+      round: "round_1"
+    },
+    %Match{
+      id: "match_3",
+      home_team: @uru_team,
+      away_team: @gha_team,
+      round: "round_2"
+    },
+    %Match{
+      id: "match_4",
+      home_team: @por_team,
+      away_team: @kor_team,
+      round: "round_2"
+    },
+    %Match{
+      id: "match_5",
+      home_team: @uru_team,
+      away_team: @por_team,
+      round: "round_3"
+    },
+    %Match{
+      id: "match_6",
+      home_team: @gha_team,
+      away_team: @kor_team,
+      round: "round_3"
+    }
+  ]
+
   def list_teams(), do: @teams
+  def list_matches(), do: @matches
 end
