@@ -2,6 +2,7 @@ defmodule WorldCupWeb.ForecastLive do
   use WorldCupWeb, :live_view
 
   alias WorldCup.Fixture
+  alias WorldCup.Fixture.Result
   alias WorldCupWeb.Components.{RoundComponent, StandingsComponent}
 
   def mount(_params, _session, socket) do
@@ -30,5 +31,27 @@ defmodule WorldCupWeb.ForecastLive do
 
   defp get_rounds(matches) do
     Fixture.split_in_rounds(matches)
+  end
+
+  def handle_event(
+        "update_forecast",
+        %{
+          "match" => %{
+            "match_id" => match_id,
+            "home_score" => home_score,
+            "away_score" => away_score
+          }
+        } = _params,
+        socket
+      ) do
+    result = %Result{
+      home_score: String.to_integer(home_score),
+      away_score: String.to_integer(away_score)
+    }
+
+    IO.inspect(result)
+    IO.inspect("Match id = #{match_id}")
+
+    {:noreply, socket}
   end
 end

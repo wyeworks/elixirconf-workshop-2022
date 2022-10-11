@@ -1,5 +1,5 @@
 defmodule WorldCup.Fixture.Match do
-  alias WorldCup.Fixture.Team
+  alias WorldCup.Fixture.{Result, Team}
 
   defstruct [
     :id,
@@ -7,7 +7,8 @@ defmodule WorldCup.Fixture.Match do
     :home_team,
     :away_team,
     :round,
-    played: false
+    played: false,
+    result: %Result{away_score: 0, home_score: 0}
   ]
 
   @type t() :: %__MODULE__{
@@ -15,6 +16,7 @@ defmodule WorldCup.Fixture.Match do
           scheduled_at: DateTime.t(),
           home_team: Team.t(),
           away_team: Team.t(),
-          played: boolean()
+          played: boolean(),
+          result: Result.t()
         }
 end
