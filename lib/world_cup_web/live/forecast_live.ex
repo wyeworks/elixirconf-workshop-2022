@@ -2,7 +2,7 @@ defmodule WorldCupWeb.ForecastLive do
   use WorldCupWeb, :live_view
 
   alias WorldCup.Fixture
-  alias WorldCupWeb.Components.RoundComponent
+  alias WorldCupWeb.Components.{RoundComponent, StandingsComponent}
 
   def mount(_params, _session, socket) do
     teams = Fixture.list_teams()
@@ -18,24 +18,7 @@ defmodule WorldCupWeb.ForecastLive do
 
   def render(assigns) do
     ~H"""
-      <table>
-        <thead>
-          <tr>
-            <th>Position</th>
-            <th>Name</th>
-            <th>Points</th>
-          </tr>
-        </thead>
-        <tbody>
-          <%= for {team, index} <- Enum.with_index(@teams, 1) do %>
-            <tr>
-              <td><%= index %></td>
-              <td><%= team.name %></td>
-              <td><%= team.points %></td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
+      <.live_component module={StandingsComponent} id="results" teams={@teams} />
 
       <div class="rounds">
         <%= for {round_id, matches} <- get_rounds(@matches) do %>
