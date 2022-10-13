@@ -22,7 +22,7 @@ defmodule WorldCupWeb.ForecastLive do
     <div>
       <.live_component module={ResultsComponent} id="results" teams={@teams} />
 
-      <div class="flex justify-center mt-10">
+      <div class="rounds">
         <%= for {round_id, matches} <- get_rounds(@matches) do %>
           <.live_component module={RoundComponent} id={round_id} matches={matches} />
         <% end %>

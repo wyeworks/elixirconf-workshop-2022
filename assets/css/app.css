@@ -5,59 +5,122 @@
 /* This file is for your main application CSS */
 
 body {
-  @apply bg-cover bg-[url('/images/soccer.jpeg')] p-10
+  background-image: url('/images/soccer.jpeg');
+  background-size: cover;
+  padding: 2.5rem;
 }
 
 h3 {
-  @apply text-2xl mx-auto mb-2
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 0.5rem;
+  font-size: 1.5rem;
+  line-height: 2rem;
 }
 
 table {
-  @apply text-center w-9/12 shadow-xl bg-yellow-300 bg-opacity-80 mx-auto
+  margin-left: auto;
+  margin-right: auto;
+  width: 75%;
+  background-color: rgb(253 224 71 / var(--tw-bg-opacity));
+  --tw-bg-opacity: 0.8;
+  text-align: center;
+  --tw-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
 thead {
-  @apply bg-yellow-400 h-10 text-lg rounded-2xl
+  height: 2.5rem;
+  border-radius: 1rem;
+  --tw-bg-opacity: 1;
+  background-color: rgb(250 204 21 / var(--tw-bg-opacity));
+  font-size: 1.125rem;
+  line-height: 1.75rem;
 }
 
 tbody {
-  @apply text-xl
+  font-size: 1.25rem;
+  line-height: 1.75rem;
 }
 
-tr{
-  @apply h-10
+tr {
+  height: 2.5rem;
 }
 
 input {
- @apply w-16 ml-4 text-center
+  margin-left: 1rem;
+  width: 4rem;
+  text-align: center;
 }
 
 p {
-  @apply text-xl
+  font-size: 1.25rem;
+  line-height: 1.75rem;
 }
 
 .team-input {
- @apply flex justify-between items-center m-4
+  margin: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .match-played {
- @apply bg-green-200 m-2 rounded-lg
+  margin: 0.5rem;
+  border-radius: 0.5rem;
+  --tw-bg-opacity: 1;
+  background-color: rgb(187 247 208 / var(--tw-bg-opacity));
 }
 
 .match-pending {
-  @apply bg-gray-200 m-2 rounded-lg
+  margin: 0.5rem;
+  border-radius: 0.5rem;
+  --tw-bg-opacity: 1;
+  background-color: rgb(229 231 235 / var(--tw-bg-opacity));
+}
+
+.rounds {
+  margin-top: 2.5rem;
+  display: flex;
+  justify-content: center;
 }
 
 .round-played {
-  @apply flex flex-col m-4 mx-10 p-4 bg-green-100 bg-opacity-95 border-2 rounded-lg shadow-xl
+  margin: 1rem;
+  margin-left: 2.5rem;
+  margin-right: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  border-radius: 0.5rem;
+  border-width: 2px;
+  background-color: rgb(220 252 231 / var(--tw-bg-opacity));
+  --tw-bg-opacity: 0.95;
+  padding: 1rem;
+  --tw-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
 .round-pending {
-  @apply flex flex-col m-4 mx-10 p-4 bg-gray-100 bg-opacity-95 border-2 rounded-lg shadow-xl
+  margin: 1rem;
+  margin-left: 2.5rem;
+  margin-right: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  border-radius: 0.5rem;
+  border-width: 2px;
+  background-color: rgb(243 244 246 / var(--tw-bg-opacity));
+  --tw-bg-opacity: 0.95;
+  padding: 1rem;
+  --tw-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
 .highlight-row {
-  @apply bg-blue-100 bg-opacity-80
+  background-color: rgb(219 234 254 / var(--tw-bg-opacity));
+  --tw-bg-opacity: 0.8;
 }
 /* Alerts and form errors used by phx.new */
 .alert {
