@@ -11,33 +11,26 @@ h3 {
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 0.5rem;
-  font-size: 1.5rem;
-  line-height: 2rem;
 }
 
 table {
   margin-left: auto;
   margin-right: auto;
   width: 75%;
-  background-color: rgb(253 224 71 / var(--tw-bg-opacity));
-  --tw-bg-opacity: 0.8;
+  background-color: rgba(116, 184, 199, 0.8);
   text-align: center;
-  --tw-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-  --tw-shadow-colored: 0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);
-  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
 thead {
   height: 2.5rem;
   border-radius: 1rem;
-  --tw-bg-opacity: 1;
-  background-color: rgb(250 204 21 / var(--tw-bg-opacity));
-  font-size: 1.125rem;
+  background-color: rgb(116, 184, 199);
+  font-size: 1.75rem;
   line-height: 1.75rem;
 }
 
 tbody {
-  font-size: 1.25rem;
+  font-size: 1.75rem;
   line-height: 1.75rem;
 }
 
@@ -47,13 +40,14 @@ tr {
 
 input {
   margin-left: 1rem;
-  width: 4rem;
   text-align: center;
 }
 
-p {
-  font-size: 1.25rem;
+.team-name {
+  width: 12rem;
+  font-size: 1.75rem;
   line-height: 1.75rem;
+  margin-bottom: 1.25rem;
 }
 
 .team-input {
@@ -64,60 +58,40 @@ p {
 }
 
 .match-played {
-  margin: 0.5rem;
+  margin: 1rem;
+  padding: 1.5rem 1rem 0 1rem;
   border-radius: 0.5rem;
-  --tw-bg-opacity: 1;
-  background-color: rgb(187 247 208 / var(--tw-bg-opacity));
+  background-color: rgb(209, 246, 222);
 }
 
 .match-pending {
-  margin: 0.5rem;
+  margin: 1rem;
+  padding: 1.5rem 1rem 0 1rem;
   border-radius: 0.5rem;
-  --tw-bg-opacity: 1;
-  background-color: rgb(229 231 235 / var(--tw-bg-opacity));
 }
 
 .rounds {
+  width: 75%;
+  margin-left: auto;
+  margin-right: auto;
   margin-top: 2.5rem;
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
 }
 
-.round-played {
+.round {
   margin: 1rem;
-  margin-left: 2.5rem;
-  margin-right: 2.5rem;
   display: flex;
   flex-direction: column;
+  flex-grow: 1;
   border-radius: 0.5rem;
   border-width: 2px;
-  background-color: rgb(220 252 231 / var(--tw-bg-opacity));
-  --tw-bg-opacity: 0.95;
-  padding: 1rem;
-  --tw-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-  --tw-shadow-colored: 0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);
-  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-}
-
-.round-pending {
-  margin: 1rem;
-  margin-left: 2.5rem;
-  margin-right: 2.5rem;
-  display: flex;
-  flex-direction: column;
-  border-radius: 0.5rem;
-  border-width: 2px;
-  background-color: rgb(243 244 246 / var(--tw-bg-opacity));
-  --tw-bg-opacity: 0.95;
-  padding: 1rem;
-  --tw-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-  --tw-shadow-colored: 0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);
-  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  background-color: rgb(243 244 246 / 0.95);
+  padding: 2rem;
 }
 
 .highlight-row {
-  background-color: rgb(219 234 254 / var(--tw-bg-opacity));
-  --tw-bg-opacity: 0.8;
+  background-color: rgba(164, 229, 242, 0.8);
 }
 /* Alerts and form errors used by phx.new */
 .alert {
