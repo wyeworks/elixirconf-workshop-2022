@@ -3,19 +3,35 @@ defmodule WorldCupWeb.Components.RoundComponent do
 
   def render(assigns) do
     ~H"""
-    <div>
+    <div class={round_class(@matches)}>
       <h3><%= round_title(@id) %></h3>
       <%= for match <- @matches do %>
-        <.form let={f} for={:match} id={match.id} phx_submit="update_forecast">
+        <.form
+          let={f}
+          for={:match}
+          id={match.id}
+          phx_change="update_forecast"
+          class={match_class(match.played)}
+        >
           <!-- Needed to catch this value to have it in the handle_event -->
           <%= hidden_input(f, :match_id, value: match.id) %>
 
-          <%= match.home_team.name %>
-          <%= number_input(f, :home_score, value: match.result.home_score || 0, min: 0) %>
-          <%= number_input(f, :away_score, value: match.result.away_score || 0, min: 0) %>
-          <%= match.away_team.name %>
-
-          <%= submit(do: "Send") %>
+          <div class="team-input">
+            <p><%= ~s(#{match.home_team.flag} #{match.home_team.abbreviation}) %></p>
+            <%= number_input(f, :home_score,
+              value: match.result.home_score || 0,
+              min: 0,
+              phx_debounce: "100"
+            ) %>
+          </div>
+          <div class="team-input">
+            <p><%= ~s(#{match.away_team.flag} #{match.away_team.abbreviation}) %></p>
+            <%= number_input(f, :away_score,
+              value: match.result.away_score || 0,
+              min: 0,
+              phx_debounce: "100"
+            ) %>
+          </div>
         </.form>
       <% end %>
     </div>
@@ -25,4 +41,10 @@ defmodule WorldCupWeb.Components.RoundComponent do
   defp round_title(round_id) do
     round_id |> String.replace("_", " ") |> String.capitalize()
   end
+
+  defp round_class([%{played: true}, %{played: true}] = _round_matches), do: "round-played"
+  defp round_class(_round_matches), do: "round-pending"
+
+  defp match_class(true), do: "match-played"
+  defp match_class(false), do: "match-pending"
 end
