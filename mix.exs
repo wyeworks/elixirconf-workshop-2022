@@ -49,8 +49,7 @@ defmodule WorldCup.MixProject do
       {:gettext, "~> 0.18"},
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
-      {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
-      {:tailwind, "~> 0.1", runtime: Mix.env() == :dev}
+      {:dialyxir, "~> 1.0", only: [:dev], runtime: false}
     ]
   end
 
