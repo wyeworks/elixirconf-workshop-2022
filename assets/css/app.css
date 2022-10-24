@@ -1,6 +1,109 @@
 /* This file is for your main application CSS */
 @import "./phoenix.css";
 
+body {
+  background-image: url('/images/soccer.jpeg');
+  background-size: cover;
+  padding: 2.5rem;
+}
+
+h3 {
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 0;
+  font-weight: 400;
+}
+
+table {
+  margin-left: auto;
+  margin-right: auto;
+  background-color: rgba(116, 184, 199, 0.8);
+  text-align: center;
+}
+
+thead {
+  height: 2.5rem;
+  border-radius: 1rem;
+  background-color: rgb(116, 184, 199);
+  font-size: 1.75rem;
+  line-height: 1.75rem;
+}
+
+th:first-child {
+  padding-left: 2rem;
+}
+
+th:last-child {
+  padding-right: 2rem;
+}
+
+tbody {
+  font-size: 1.75rem;
+  line-height: 1.75rem;
+}
+
+tr {
+  height: 2.5rem;
+}
+
+input {
+  margin-left: 1rem;
+  text-align: center;
+}
+
+.team-name {
+  width: 13rem;
+  font-size: 1.75rem;
+  font-weight: 400;
+  line-height: 1.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.team-input {
+  margin: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.match-played {
+  margin: 1rem;
+  padding: 1.5rem 1rem 0 1rem;
+  border-radius: 0.5rem;
+  background-color: rgb(209, 246, 222);
+}
+
+.match-pending {
+  margin: 1rem;
+  padding: 1.5rem 1rem 0 1rem;
+  border-radius: 0.5rem;
+}
+
+.rounds {
+  margin-top: 2.5rem;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.round {
+  margin: 1rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  border-radius: 0.5rem;
+  border-width: 2px;
+  background-color: rgb(243 244 246 / 0.95);
+  padding: 1rem;
+}
+
+.table-highlight-row {
+  background-color: rgba(164, 229, 242, 0.8);
+}
+
+.table-team-name {
+  text-align: left;
+}
+
 /* Alerts and form errors used by phx.new */
 .alert {
   padding: 15px;
