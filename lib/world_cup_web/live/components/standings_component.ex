@@ -7,7 +7,7 @@ defmodule WorldCupWeb.Components.StandingsComponent do
       <thead>
         <tr>
           <th>Position</th>
-          <th>Name</th>
+          <th class="table-team-name">Name</th>
           <th>Points</th>
         </tr>
       </thead>
@@ -15,7 +15,7 @@ defmodule WorldCupWeb.Components.StandingsComponent do
         <%= for {team, index} <- Enum.with_index(@teams, 1) do %>
           <tr>
             <td><%= index %></td>
-            <td><%= team.name %></td>
+            <td class="table-team-name"><b><%= "#{team.flag} #{team.name}" %></b></td>
             <td><b><%= team.points %></b></td>
           </tr>
         <% end %>
