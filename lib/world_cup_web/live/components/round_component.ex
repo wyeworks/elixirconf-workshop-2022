@@ -3,7 +3,7 @@ defmodule WorldCupWeb.Components.RoundComponent do
 
   def render(assigns) do
     ~H"""
-    <div class={round_class(@matches)}>
+    <div class="round">
       <h3><%= round_title(@id) %></h3>
       <%= for match <- @matches do %>
         <.form
@@ -17,7 +17,7 @@ defmodule WorldCupWeb.Components.RoundComponent do
           <%= hidden_input(f, :match_id, value: match.id) %>
 
           <div class="team-input">
-            <p><%= ~s(#{match.home_team.flag} #{match.home_team.abbreviation}) %></p>
+            <p class="team-name"><%= ~s(#{match.home_team.flag} #{match.home_team.abbreviation}) %></p>
             <%= number_input(f, :home_score,
               value: match.result.home_score || 0,
               min: 0,
@@ -25,7 +25,7 @@ defmodule WorldCupWeb.Components.RoundComponent do
             ) %>
           </div>
           <div class="team-input">
-            <p><%= ~s(#{match.away_team.flag} #{match.away_team.abbreviation}) %></p>
+            <p class="team-name"><%= ~s(#{match.away_team.flag} #{match.away_team.abbreviation}) %></p>
             <%= number_input(f, :away_score,
               value: match.result.away_score || 0,
               min: 0,
@@ -41,9 +41,6 @@ defmodule WorldCupWeb.Components.RoundComponent do
   defp round_title(round_id) do
     round_id |> String.replace("_", " ") |> String.capitalize()
   end
-
-  defp round_class([%{played: true}, %{played: true}] = _round_matches), do: "round-played"
-  defp round_class(_round_matches), do: "round-pending"
 
   defp match_class(true), do: "match-played"
   defp match_class(false), do: "match-pending"
