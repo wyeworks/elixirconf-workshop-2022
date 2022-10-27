@@ -1,7 +1,7 @@
 defmodule WorldCup.Standings do
   def calculate(teams, matches) do
     Enum.map(teams, fn team ->
-      Enum.reduce(matches, team, fn match, acc -> process_match_result(match, acc) end)
+      Enum.reduce(matches, team, &process_match_result/2)
     end)
     |> rank_teams()
   end
