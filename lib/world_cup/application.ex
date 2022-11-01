@@ -13,9 +13,10 @@ defmodule WorldCup.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: WorldCup.PubSub},
       # Start the Endpoint (http/https)
-      WorldCupWeb.Endpoint
+      WorldCupWeb.Endpoint,
       # Start a worker by calling: WorldCup.Worker.start_link(arg)
       # {WorldCup.Worker, arg}
+      WorldCup.Fixture.Store
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

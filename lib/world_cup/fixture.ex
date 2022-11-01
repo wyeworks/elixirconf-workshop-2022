@@ -3,7 +3,7 @@ defmodule WorldCup.Fixture do
   The fixture context.
   """
 
-  alias WorldCup.Fixture.{Match, Team}
+  alias WorldCup.Fixture.{Match, Team, Store}
   alias WorldCup.Standings
 
   @uru_team %Team{
@@ -78,16 +78,26 @@ defmodule WorldCup.Fixture do
   def list_teams(), do: @teams
   def list_matches(), do: @matches
 
-  def split_in_rounds(matches), do: Enum.group_by(matches, & &1.round)
+  def matches_in_rounds() do
+    Enum.group_by(Store.get_matches(), & &1.round)
+  end
 
-  def update_match_result(matches, match_id, result) do
+  def update_match_result(match_id, result) do
+    matches = Store.get_matches()
+
+    do_update_match_result(matches, match_id, result)
+    |> Store.save_matches()
+  end
+
+  defp do_update_match_result(matches, match_id, result) do
     Enum.map(matches, fn
       match when match.id == match_id -> %{match | played: true, result: result}
       match -> match
     end)
   end
 
-  def calculate_team_stats(matches) do
+  def calculate_team_stats() do
+    matches = Store.get_matches()
     Standings.calculate(list_teams(), matches)
   end
 end

@@ -1,6 +1,9 @@
 defmodule WorldCupWeb.Components.RoundComponent do
   use WorldCupWeb, :live_component
 
+  alias WorldCup.Fixture
+  alias WorldCup.Fixture.Result
+
   def render(assigns) do
     ~H"""
     <div class="round">
@@ -11,6 +14,8 @@ defmodule WorldCupWeb.Components.RoundComponent do
           for={:match}
           id={match.id}
           phx_change="update_forecast"
+          phx_target={@myself}
+          phx-auto-recover="ignore"
           class={match_class(match.played)}
         >
           <%= hidden_input(f, :match_id, value: match.id) %>
@@ -35,5 +40,29 @@ defmodule WorldCupWeb.Components.RoundComponent do
 
   defp round_title(round_id) do
     round_id |> String.replace("_", " ") |> String.capitalize()
+  end
+
+  def handle_event(
+        "update_forecast",
+        %{
+          "match" => %{
+            "match_id" => match_id,
+            "home_score" => home_score,
+            "away_score" => away_score
+          }
+        } = _params,
+        socket
+      ) do
+    result = %Result{
+      home_score: String.to_integer(home_score),
+      away_score: String.to_integer(away_score)
+    }
+
+    matches = Fixture.update_match_result(match_id, result)
+
+    send(self(), :match_updated)
+
+    round_matches = Enum.filter(matches, &(&1.round == socket.assigns.id))
+    {:noreply, assign(socket, :matches, round_matches)}
   end
 end
