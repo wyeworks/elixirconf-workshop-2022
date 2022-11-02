@@ -7,6 +7,9 @@
 # General application configuration
 import Config
 
+config :world_cup,
+  ecto_repos: [WorldCup.Repo]
+
 # Configures the endpoint
 config :world_cup, WorldCupWeb.Endpoint,
   url: [host: "localhost"],
