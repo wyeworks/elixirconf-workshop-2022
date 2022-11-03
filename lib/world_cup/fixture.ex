@@ -17,7 +17,9 @@ defmodule WorldCup.Fixture do
     |> Repo.all()
   end
 
-  def split_in_rounds(matches), do: Enum.group_by(matches, & &1.round)
+  def matches_in_rounds() do
+    Enum.group_by(list_matches(), & &1.round)
+  end
 
   def update_match_result(match, result) do
     Ecto.Multi.new()
@@ -26,7 +28,7 @@ defmodule WorldCup.Fixture do
     |> Repo.transaction()
   end
 
-  def calculate_teams_stats(matches) do
-    Standings.calculate(list_teams(), matches)
+  def calculate_teams_stats() do
+    Standings.calculate(list_teams(), list_matches())
   end
 end
